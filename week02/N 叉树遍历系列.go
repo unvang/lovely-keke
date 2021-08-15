@@ -98,3 +98,47 @@ func postorder(root *Node) []int {
 	pre(root)
 	return res
 }
+
+//迭代
+func preorder(root *Node) []int {
+	res := []int{}
+	if root == nil {
+		return res
+	}
+	st := []*Node{root}
+	for len(st) > 0 {
+		cur := st[len(st)-1]
+		st[len(st)-1] = nil
+		st = st[:len(st)-1]
+		res = append(res, cur.Val)
+		for i := len(cur.Children) - 1; i >= 0; i-- {
+			st = append(st, cur.Children[i])
+		}
+	}
+	return res
+}
+
+func postorder(root *Node) []int {
+	res := []int{}
+	if root == nil {
+		return res
+	}
+	st := []*Node{root}
+	for len(st) > 0 {
+		cur := st[len(st)-1]
+		res = append(res, cur.Val)
+		//pop
+		st[len(st)-1] = nil
+		st = st[:len(st)-1]
+		for _, child := range cur.Children {
+			st = append(st, child)
+		}
+	}
+	reverse(res)
+	return res
+}
+func reverse(s []int) {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+}

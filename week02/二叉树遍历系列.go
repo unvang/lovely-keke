@@ -29,7 +29,10 @@ func preorderTraversal2(root *TreeNode) []int {
 		for len(st) > 0 {
 			top := st[len(st)-1]
 			res = append(res, top.Val)
+			//pop
+			st[len(st)-1] = nil
 			st = st[:len(st)-1]
+
 			if top.Right != nil {
 				st = append(st, top.Right)
 			}
@@ -68,7 +71,10 @@ func inorderTraversal2(root *TreeNode) []int {
 				cur = cur.Left
 			} else {
 				cur = st[len(st)-1]
+				//pop
+				st[len(st)-1] = nil
 				st = st[:len(st)-1]
+
 				res = append(res, cur.Val)
 				cur = cur.Right
 			}
@@ -159,6 +165,114 @@ func levelOrder2(root *TreeNode) [][]int {
 			res[level] = append(res[level], queue[0].Val)
 			queue[0] = nil
 			queue = queue[1:]
+		}
+	}
+	return res
+}
+
+//迭代使用nil标记法，统一，只需替换二行代码顺序
+func preorderTraversal(root *TreeNode) []int {
+	res := []int{}
+	st := []*TreeNode{}
+	if root != nil {
+		st = append(st, root) //push
+	}
+	for len(st) > 0 {
+		node := st[len(st)-1]
+		if node != nil {
+			//pop
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+
+			if node.Right != nil {
+				st = append(st, node.Right)
+			}
+			if node.Left != nil {
+				st = append(st, node.Left)
+			}
+			st = append(st, node)
+			st = append(st, nil)
+		} else {
+			//pop nil
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+
+			top := st[len(st)-1]
+			//pop
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+			res = append(res, top.Val)
+		}
+	}
+	return res
+}
+func inorderTraversal(root *TreeNode) []int {
+	res := []int{}
+	st := []*TreeNode{}
+	if root != nil {
+		st = append(st, root) //push
+	}
+	for len(st) > 0 {
+		node := st[len(st)-1]
+		if node != nil {
+			//pop
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+
+			if node.Right != nil {
+				st = append(st, node.Right)
+			}
+			st = append(st, node)
+			st = append(st, nil)
+			if node.Left != nil {
+				st = append(st, node.Left)
+			}
+		} else {
+			//pop nil
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+
+			top := st[len(st)-1]
+			//pop
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+			res = append(res, top.Val)
+		}
+	}
+	return res
+}
+
+func postorderTraversal(root *TreeNode) (a []int) {
+	res := []int{}
+	st := []*TreeNode{}
+	if root != nil {
+		st = append(st, root) //push
+	}
+	for len(st) > 0 {
+		node := st[len(st)-1]
+		if node != nil {
+			//pop
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+			st = append(st, node)
+			st = append(st, nil)
+			if node.Right != nil {
+				st = append(st, node.Right)
+			}
+
+			if node.Left != nil {
+				st = append(st, node.Left)
+			}
+		} else {
+			//pop nil
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+
+			top := st[len(st)-1]
+			//pop
+			st[len(st)-1] = nil
+			st = st[:len(st)-1]
+			res = append(res, top.Val)
 		}
 	}
 	return res
