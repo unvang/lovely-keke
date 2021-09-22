@@ -1,58 +1,4 @@
-package week07
-
-//又是爬楼梯
-
-//爬楼梯
-//首先写一遍递归模版
-// func recursion(n int) {
-// 	//terminator
-// 	if level > max_level {
-// 		//process result
-// 		return
-// 	}
-// 	//process current logic
-// 	process(level, param)
-
-// 	//dirll down
-// 	recursion(level+1, newpararm)
-
-// 	//restore current status
-// }
-func climbStairs(n int) int {
-	if n <= 2 {
-		return n
-	}
-	f1, f2, f3 := 1, 2, 0
-	for i := 3; i <= n; i++ {
-		f3 = f1 + f2
-		f1 = f2
-		f2 = f3
-	}
-	return f3
-}
-
-//傻递归
-func climbStairsSilly(n int) int {
-	if n <= 2 {
-		return n
-	}
-
-	return climbStairsSilly(n-1) + climbStairsSilly(n-2)
-}
-
-//加缓存
-func climbStairsCache(n int) int {
-	if n <= 2 {
-		return n
-	}
-	a := make([]int, n+1)
-	a[1] = 1
-	a[2] = 2
-	for i := 3; i <= n; i++ {
-		a[i] = a[i-1] + a[i-2]
-	}
-	return a[n]
-}
+package week08
 
 //N皇后，
 
@@ -132,4 +78,36 @@ func isSolved(board [][]string, row, col int) bool {
 		}
 	}
 	return true
+}
+
+//位1的个数;hamming重量
+//O(k)时间复杂度，k是uint32位数
+func hammingWeight(num uint32) int {
+	res :=0
+    for i:=0 ;i<32;i++{
+		if 1<<i & num >0{
+			res++
+		}
+	}
+	return res
+}
+//O(logn)时间复杂度，比如7，111，只需查询三次，n = n & (n-1) 刚好把二进制末位1变成0
+func hammingWeight(num uint32) int {
+	res :=0
+	for ;num>0;num &= (num-1){
+		res++
+	}
+	return res
+}
+
+//2的幂,n是2的幂，n的二进制里面只有一个1
+func isPowerOfTwo(n int) bool {
+	return n>0 && n & (n-1) ==0
+}
+func isPowerOfTwo(n int) bool {
+	return n>0 && n &-n ==n
+}
+func isPowerOfTwo(n int) bool {
+	big := 1 << 30
+	return n > 0 && big%n == 0
 }
